@@ -1,0 +1,28 @@
+# Meson Cross-compilation File Base using GCC ARM
+# Requires that arm-none-eabi-* is found in your PATH
+# For more information: http://mesonbuild.com/Cross-compilation.html
+
+[binaries]
+c = 'x86_64-unknown-francium-gcc'
+cpp = 'x86_64-unknown-francium-g++'
+# *-gcc-ar is used over *-ar to support LTO flags. 
+# Without -gcc-ar, LTO will generate a linker warning:
+# arm-none-eabi-ar: file.o: plugin needed to handle lto object
+ar = 'x86_64-unknown-francium-ar'
+strip = 'x86_64-unknown-francium-strip'
+
+[properties]
+objcopy = 'x86_64-unknown-francium-objcopy'
+# Flags used when checking for supported linker arguments
+# Use this property when flag checks fail due to linker errors with ARM GCC
+# get_supported_link_arg_flags = ['--specs=nosys.specs']
+# Keep this set, or the sanity check won't pass
+needs_exe_wrapper = true
+
+[host_machine]
+system = 'francium'
+cpu_family = 'x86_64'
+# CPU should be redefined in child cross files - this is a placeholder
+# that will be used in case a child file does not override this setting
+cpu = 'x86_64-generic'
+endian = 'little'
